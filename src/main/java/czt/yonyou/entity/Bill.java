@@ -1,37 +1,40 @@
 package czt.yonyou.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.annotation.Generated;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Bill")
+@Table(name = "bill")
 public class Bill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String code;
     private String name;
     private String department;
     //数据表字段agent_id Bill和Agent为多对一关系。
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "agent_id")
+    @JsonIgnore  //陷入死循环
     private Agent agent;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "bill_id")
+    @OneToMany(mappedBy = "bill")
+    //@JoinColumn(name = "bill_id")
     private List<BillItem> billItems;
 
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -103,5 +106,14 @@ public class Bill {
                 ", agent=" + agent +
                 ", billItems=" + billItems +
                 '}';
+    }
+
+    public Bill(){};
+
+    public Bill(String code, String name, String department, List<BillItem> billItems) {
+        this.code = code;
+        this.name = name;
+        this.department = department;
+        this.billItems = billItems;
     }
 }

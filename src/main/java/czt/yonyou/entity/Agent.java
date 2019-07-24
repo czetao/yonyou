@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 //数据库端，表名
 @Entity
-@Table(name = "Agent")
+@Table(name = "agent")
 public class Agent {
 
     //主键、自动生成值
@@ -22,8 +22,8 @@ public class Agent {
     private String person;
 
     //多对一
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "agent_id")
+    @OneToMany(mappedBy = "agent")
+   // @JoinColumn(name = "agent_id")
     private List<Bill> bills;
 
     public Agent(String s3, String s, String s1, String s2) {
@@ -93,5 +93,9 @@ public class Agent {
                 ", name='" + name + '\'' +
                 ", person='" + person + '\'' +
                 '}';
+    }
+
+    public Agent() {
+
     }
 }

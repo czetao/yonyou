@@ -1,13 +1,15 @@
 package czt.yonyou.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 /**
  * bill 和 billItem为一对多
  */
-@Table(name = "BillItem")
 @Entity
+@Table(name = "bill_item")
 public class BillItem {
 
     @Id
@@ -17,8 +19,10 @@ public class BillItem {
     private String name;
     private String material;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @ManyToOne()
     @JoinColumn(name = "bill_id")
+    @JsonIgnore
     private Bill bill;
 
     public String getId() {
@@ -88,4 +92,9 @@ public class BillItem {
     public int hashCode() {
         return Objects.hash(id, code, name, material, bill);
     }
+
+    public BillItem() {
+
+    }
+
 }
